@@ -23,29 +23,48 @@ export const TodolistTitle = ({ todolist }: Props) => {
 
   const dispatch = useAppDispatch()
 
-  const changeTodolistStatus = (entityStatus: RequestStatus) => {
-    dispatch(
-      todolistsApi.util.updateQueryData("getTodolists", undefined, (state) => {
-        const todolist = state.find((todolist) => todolist.id === id)
-        if (todolist) {
-          todolist.entityStatus = entityStatus
-        }
-      }),
-    )
-  }
+  // const changeTodolistStatus = (entityStatus: RequestStatus) => {
+  //   dispatch(
+  //     todolistsApi.util.updateQueryData("getTodolists", undefined, (state) => {
+  //       const todolist = state.find((todolist) => todolist.id === id)
+  //       if (todolist) {
+  //         todolist.entityStatus = entityStatus
+  //       }
+  //     }),
+  //   )
+  // }
+  // const deleteTodolist = () => {
+  //   changeTodolistStatus("loading")
+  //   removeTodolist(id)
+  //     .unwrap()
+  //     .catch(() => {
+  //       changeTodolistStatus("idle")
+  //     })
+  // }
 
-  const deleteTodolist = () => {
-    changeTodolistStatus("loading")
-    removeTodolist(id)
-      .unwrap()
-      .catch(() => {
-        changeTodolistStatus("idle")
-      })
-  }
+  //// Optimistic
+  // const deleteTodolist = async () => {
+  //   const patchResult = dispatch(
+  //     todolistsApi.util.updateQueryData("getTodolists", undefined, (state) => {
+  //       const todolist = state.find((todolist) => todolist.id === id)
+  //       if (todolist) {
+  //         todolist.entityStatus = "loading"
+  //       }
+  //     }),
+  //   )
+  //   try {
+  //     const res = await removeTodolist(id)
+  //     if (res.error) {
+  //       patchResult.undo()
+  //     }
+  //   } catch (e) {
+  //     patchResult.undo()
+  //   }
+  // }
 
-  const changeTodolistTitle = (title: string) => {
-    updateTodolistTitle({ id, title })
-  }
+  const deleteTodolist = () => removeTodolist(id)
+
+  const changeTodolistTitle = (title: string) => updateTodolistTitle({ id, title })
 
   return (
     <div className={styles.container}>
